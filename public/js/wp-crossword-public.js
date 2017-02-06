@@ -78,6 +78,27 @@
                 $("#xw").on("focusout", ".crossword-input" , function(e){
                     $(this).parent().removeClass("xw-input-focus");
                 })
+                
+                $("#legend-wrap").on('keyup','.legend-input', function(e){
+                    var row = $(this).attr("data-row");
+                    var col  = $(this).attr("data-col");
+                    var dir  = ($(this).attr("data-across")) ? 'across' : 'down' ;
+                    var word_length  = $(this).attr("maxlength");
+                    
+                    /* if(dir == 'across') sp = row;
+                    
+                    for(var r = sp; r < (word_length + sp) ; r++) {
+                        if(dir == 'across') {
+                            $("#crossword-"+row+"-"+r).find(".crossword-input").attr("value", e);
+                        }
+                    } */
+                    
+                    //$("#crossword-"+row+"-"+col).find(".crossword-input").attr("value",$(this).val());
+                    console.log("#crossword-"+row+"-"+col);
+                    console.log(e.key);
+                    console.log($(this).val());
+                });
+                
             }
         });
         
@@ -91,7 +112,7 @@
             for(var c = 0; c < grid[r].length; c++){
                 var cell = grid[r][c];
                 if(cell) {
-                    $('#crossword-' + r + '-' + c).html('<input type="text" class="crossword-input" maxlength="1" />');                    
+                    $('#crossword-' + r + '-' + c).html('<input type="text" class="crossword-input" maxlength="1" value="" />');                    
                 }
             }
         }
@@ -105,7 +126,11 @@
         for (var k in groups) {
             var html = [];
             for (var i = 0; i < groups[k].length; i++) {
-                var clue_input = '<span style="display: inline-block; border-bottom: 1px solid black; color: #aaa;">' + groups[k][i]['word'].toLowerCase() + ' </span>';
+                var extra_data = '';
+                extra_data = 'data-row="'+groups[k][i]['row']+'" ';
+                extra_data += 'data-col="'+groups[k][i]['col']+'" ';
+                extra_data += 'data-'+k+'="true" ';
+                var clue_input = '<br /><span style="display: inline-block; border-bottom: 1px solid black; color: #aaa;"><input type="text" class="legend-input" '+extra_data+' maxlength="'+groups[k][i]['word'].length+'" /></span>';
                 var clue = groups[k][i]['clue'];
                 //var escaped_clue = escape(clue).replace(/&lt;i&gt;/g, '<i>').replace(/&lt;\/i&gt;/g, '</i>');
                 var escaped_clue = clue;
